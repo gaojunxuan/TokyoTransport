@@ -1,0 +1,20 @@
+﻿<Page
+    x:Class="TokyoTransport.DemoUWP.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TokyoTransport.DemoUWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Maps:MapControl x:Name="MapCtl"/>
+        <Grid>
+            <TextBox x:Name="CompanyTbx" VerticalAlignment="Top" Margin="24" PlaceholderText="Railway Company Name (e.g. JR)"></TextBox>
+            <TextBox x:Name="LineTbx" VerticalAlignment="Top" Margin="24,72,24,0" PlaceholderText="Line Name (e.g. Yamanote)"></TextBox>
+            <Button x:Name="RunBtn" Content="GO" VerticalAlignment="Top" Margin="24,120,24,0" Click="RunBtn_Click"/>
+        </Grid>
+    </Grid>
+</Page>
