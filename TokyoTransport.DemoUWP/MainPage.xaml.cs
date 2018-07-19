@@ -36,7 +36,7 @@ namespace TokyoTransport.DemoUWP
         {
             if(!string.IsNullOrWhiteSpace(CompanyTbx.Text)&&!string.IsNullOrEmpty(LineTbx.Text))
             {
-                Uri requestUri = new Uri($"https://tokyotransport.azurewebsites.net/api/GetStationInfo?code=oPMLjl5vBxUgd0nxlFMlfIg7yqHnxojyjMV8Exx0LWGa383toxWqew==&company={CompanyTbx.Text}&line={LineTbx.Text}");
+                Uri requestUri = new Uri($"https://tokyotransport.azurewebsites.net/api/GetRailwayStationInfo?code=[YOUR_CODE]==&company={CompanyTbx.Text}&line={LineTbx.Text}");
                 HttpClient client = new HttpClient();
                 var response = await client.GetAsync(requestUri);
                 if(response.IsSuccessStatusCode)

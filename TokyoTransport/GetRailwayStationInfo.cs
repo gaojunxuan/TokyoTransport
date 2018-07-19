@@ -13,16 +13,18 @@ using System.Linq;
 
 namespace TokyoTransport
 {
-    public static class GetStationInfo
+    public static class GetRailwayStationInfo
     {
-        [FunctionName("GetStationInfo")]
-        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = null)]HttpRequest req, TraceWriter log)
+        [FunctionName("GetRailwayStationInfo")]
+        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequest req, TraceWriter log)
         {
             log.Info("C# HTTP trigger function processed a request.");
-            string url = "https://api-tokyochallenge.odpt.org/api/v4/odpt:Station";
+
+            string url = JsonHelper.ComposeURL("GetRailwayStationInfo");
             string company = req.Query["company"];
             string line = req.Query["line"];
             string station = req.Query["station"];
+
             string requestBody = new StreamReader(req.Body).ReadToEnd();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             company = company ?? data?.company;
@@ -31,7 +33,7 @@ namespace TokyoTransport
 
             if (company != null && line != null)
             {
-                url = $"{url}?acl:consumerKey={await TokenHelper.GetToken("tokyochallenge")}&odpt:operator={RailwayCompany.GetJapaneseCompanyName(company)}";
+                url = $"{url}?acl:consumerKey={await TokenHelper.GetToken("tokyochallenge")}&odpt:operator={RailwayCompany.GetCompanyByName(company)}";
                 //url = $"{url}?acl:consumerKey={"replace with your key while debugging"}&odpt:operator={RailwayCompany.GetCompanyByName(company)}";
                 url += $"&odpt:railway={RailwayCompany.GetFormattedLineName(company, line)}";
                 string response = await JsonHelper.GetJsonString(url);
@@ -44,8 +46,8 @@ namespace TokyoTransport
                         StationName = i["dc:title"]?.ToString(),
                         StationCode = i["odpt:stationCode"]?.ToString(),
                         English = i["odpt:stationTitle"]?["en"].ToString(),
-                        Longitude = i["geo:long"],
-                        Latitude = i["geo:lat"]
+                        Latitude = i["geo:lat"],
+                        Longitude = i["geo:long"]
                     });
                 }
                 if (station != null)

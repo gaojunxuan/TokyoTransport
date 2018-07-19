@@ -18,5 +18,16 @@ namespace TokyoTransport.Helper
             }
             return response;
         }
+        static readonly string _baseURL = "https://api-tokyochallenge.odpt.org";
+        static readonly Dictionary<string, string> _paths = new Dictionary<string, string>()
+        {
+            { "GetRailwayStationInfo","/api/v4/odpt:Station" },
+            { "GetRailwayFare","/api/v4/odpt:RailwayFare" },
+
+        };
+        public static string ComposeURL(string requestPath)
+        {
+            return _baseURL + _paths[requestPath];
+        }
     }
 }
