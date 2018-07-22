@@ -33,9 +33,9 @@ namespace TokyoTransport
 
             if (company != null && line != null)
             {
-                url = $"{url}?acl:consumerKey={await TokenHelper.GetToken("tokyochallenge")}&odpt:operator={RailwayCompany.GetCompanyByName(company)}";
+                url = $"{url}?acl:consumerKey={await TokenHelper.GetToken("tokyochallenge")}&odpt:operator={OperatorInfo.GetCompanyByName(company)}";
                 //url = $"{url}?acl:consumerKey={"replace with your key while debugging"}&odpt:operator={RailwayCompany.GetCompanyByName(company)}";
-                url += $"&odpt:railway={RailwayCompany.GetFormattedLineName(company, line)}";
+                url += $"&odpt:railway={OperatorInfo.GetFormattedLineName(company, line)}";
                 string response = await JsonHelper.GetJsonString(url);
                 JToken jsonArr = JArray.Parse(response);
                 List<dynamic> result = new List<dynamic>();

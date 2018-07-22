@@ -23,6 +23,7 @@ namespace TokyoTransport.Helper
         {
             { "GetRailwayStationInfo","/api/v4/odpt:Station" },
             { "GetRailwayFare","/api/v4/odpt:RailwayFare" },
+            { "GetFlightInfoArrival","/api/v4/odpt:FlightInformationArrival" },
 
         };
         public static string ComposeURL(string requestPath)
