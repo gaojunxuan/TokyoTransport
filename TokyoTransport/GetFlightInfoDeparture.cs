@@ -14,9 +14,9 @@ using System.Text.RegularExpressions;
 
 namespace TokyoTransport
 {
-    public static class GetFlightInfoArrival
+    public static class GetFlightInfoDeparture
     {
-        [FunctionName("GetFlightInfoArrival")]
+        [FunctionName("GetFlightInfoDeparture")]
         public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequest req, TraceWriter log)
         {
             log.Info("C# HTTP trigger function processed a request.");
@@ -24,14 +24,14 @@ namespace TokyoTransport
             Regex regex = new Regex(@"odpt\.\S+\.");
             string flightNumber = req.Query["flightNumber"];
             string airport = req.Query["airport"];
-            string from = req.Query["from"];
-            string url = JsonHelper.ComposeURL("GetFlightInfoArrival");
+            string to = req.Query["to"];
+            string url = JsonHelper.ComposeURL("GetFlightInfoDeparture");
 
             string requestBody = new StreamReader(req.Body).ReadToEnd();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             flightNumber = flightNumber ?? data?.flightNumber;
             airport = airport ?? data?.airport;
-            from = from ?? data?.from;
+            to = to ?? data?.to;
 
             if (airport != null)
             {
@@ -40,9 +40,9 @@ namespace TokyoTransport
                 {
                     url += $"&odpt:flightNumbers={flightNumber}";
                 }
-                if (from != null)
+                if (to != null)
                 {
-                    url += $"&odpt:departureAirport=odpt.Airport:{from}";
+                    url += $"&odpt:destinationAirport=odpt.Airport:{to}";
                 }
                 string response = await JsonHelper.GetJsonString(url);
                 JArray jsonArray = JArray.Parse(response);
@@ -62,6 +62,7 @@ namespace TokyoTransport
                         FlightStatus = i["odpt:flightStatus"]?.ToString().Replace("odpt.FlightStatus:", ""),
                         AircraftModel = i["odpt:aircraftModel"],
                         BaggageClaim = i["odpt:baggageClaim "],
+                        CheckInCounters = i["odpt:checkInCounters"],
                     });
                 }
                 return new OkObjectResult(result);
