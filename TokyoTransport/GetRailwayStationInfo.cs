@@ -34,8 +34,12 @@ namespace TokyoTransport
             if (company != null && line != null)
             {
                 url = $"{url}?acl:consumerKey={await TokenHelper.GetToken("tokyochallenge")}&odpt:operator={OperatorInfo.GetCompanyByName(company)}";
-                //url = $"{url}?acl:consumerKey={"replace with your key while debugging"}&odpt:operator={RailwayCompany.GetCompanyByName(company)}";
+                //url = $"{url}?acl:consumerKey={"KEY"}&odpt:operator={OperatorInfo.GetCompanyByName(company)}";
                 url += $"&odpt:railway={OperatorInfo.GetFormattedLineName(company, line)}";
+                if (station != null)
+                {
+                    url += $"&owl:sameAs={OperatorInfo.GetFormattedStationName(company,line,station)}";
+                }
                 string response = await JsonHelper.GetJsonString(url);
                 JToken jsonArr = JArray.Parse(response);
                 List<dynamic> result = new List<dynamic>();
@@ -49,10 +53,6 @@ namespace TokyoTransport
                         Latitude = i["geo:lat"],
                         Longitude = i["geo:long"]
                     });
-                }
-                if (station != null)
-                {
-                    result = result.Where(x => x.English == station).ToList();
                 }
                 return (ActionResult)new OkObjectResult(result);
             }
