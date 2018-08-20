@@ -10,6 +10,7 @@ using TokyoTransport.Helper;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using TokyoTransport.Model;
 
 namespace TokyoTransport
 {
@@ -20,7 +21,7 @@ namespace TokyoTransport
         {
             log.Info("C# HTTP trigger function processed a request.");
 
-            string url = JsonHelper.ComposeURL("GetRailwayFare");
+            string url = RequestHelper.ComposeURL("GetRailwayFare");
         
             string fromStation = req.Query["fromStation"];
             string fromLine = req.Query["fromLine"];
@@ -39,17 +40,17 @@ namespace TokyoTransport
             if (fromStation != null & toStation != null & fromLine != null & toStation != null & company != null)
             {
                 url = $"{url}?acl:consumerKey={await TokenHelper.GetToken("tokyochallenge")}&odpt:operator={OperatorInfo.GetCompanyByName(company)}&odpt:fromStation={OperatorInfo.GetFormattedStationName(company, fromLine, fromStation)}&odpt:toStation={OperatorInfo.GetFormattedStationName(company, toLine, toStation)}";
-                string response = await JsonHelper.GetJsonString(url);
+                string response = await RequestHelper.GetJsonString(url);
                 JToken jsonArr = JArray.Parse(response);
                 List<dynamic> result = new List<dynamic>();
                 foreach (var i in jsonArr)
                 {
-                    result.Add(new
+                    result.Add(new RailwayFare()
                     {
-                        IcCardFare = i["odpt:icCardFare"],
-                        TicketFare = i["odpt:ticketFare"],
-                        ChildIcCardFare = i["odpt:childIcCardFare"],
-                        ChildTicketFare = i["odpt:childTicketFare"]
+                        IcCardFare = (int)i["odpt:icCardFare"],
+                        TicketFare = (int)i["odpt:ticketFare"],
+                        ChildIcCardFare = (int)i["odpt:childIcCardFare"],
+                        ChildTicketFare = (int)i["odpt:childTicketFare"]
                     });
                 }
                 return new OkObjectResult(result);

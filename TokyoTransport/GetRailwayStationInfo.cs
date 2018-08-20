@@ -20,7 +20,7 @@ namespace TokyoTransport
         {
             log.Info("C# HTTP trigger function processed a request.");
 
-            string url = JsonHelper.ComposeURL("GetRailwayStationInfo");
+            string url = RequestHelper.ComposeURL("GetRailwayStationInfo");
             string company = req.Query["company"];
             string line = req.Query["line"];
             string station = req.Query["station"];
@@ -40,7 +40,7 @@ namespace TokyoTransport
                 {
                     url += $"&owl:sameAs={OperatorInfo.GetFormattedStationName(company,line,station)}";
                 }
-                string response = await JsonHelper.GetJsonString(url);
+                string response = await RequestHelper.GetJsonString(url);
                 JToken jsonArr = JArray.Parse(response);
                 List<dynamic> result = new List<dynamic>();
                 foreach (var i in jsonArr)

@@ -25,7 +25,7 @@ namespace TokyoTransport
             string flightNumber = req.Query["flightNumber"];
             string airport = req.Query["airport"];
             string from = req.Query["from"];
-            string url = JsonHelper.ComposeURL("GetFlightInfoArrival");
+            string url = RequestHelper.ComposeURL("GetFlightInfoArrival");
 
             string requestBody = new StreamReader(req.Body).ReadToEnd();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
@@ -44,7 +44,7 @@ namespace TokyoTransport
                 {
                     url += $"&odpt:departureAirport=odpt.Airport:{from}";
                 }
-                string response = await JsonHelper.GetJsonString(url);
+                string response = await RequestHelper.GetJsonString(url);
                 JArray jsonArray = JArray.Parse(response);
                 List<dynamic> result = new List<dynamic>();
                 foreach (var i in jsonArray)

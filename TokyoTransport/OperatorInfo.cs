@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TokyoTransport.Model;
 
 namespace TokyoTransport
 {

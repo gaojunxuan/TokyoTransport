@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TokyoTransport.Helper
 {
-    public class JsonHelper
+    public class RequestHelper
     {
         static HttpClient httpClient;
         public static async Task<string> GetJsonString(string url)

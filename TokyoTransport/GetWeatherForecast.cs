@@ -35,7 +35,7 @@ namespace TokyoTransport
                 baseURL += "q=Tokyo,jp&";
             baseURL += $"appid={await TokenHelper.GetToken("weather")}";
 
-            string response = await JsonHelper.GetJsonString(baseURL);
+            string response = await RequestHelper.GetJsonString(baseURL);
             JObject jobj = JObject.Parse(response);
             JArray jsonArr = (JArray)jobj["list"];
             List<dynamic> result = new List<dynamic>();
