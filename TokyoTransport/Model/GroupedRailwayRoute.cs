@@ -58,7 +58,7 @@ namespace TokyoTransport.Model
             }
             else if (Routes != null & Routes.Count != 0)
             {
-                url = $"{RequestHelper.ComposeURL("GetRailwayFare")}?acl:consumerKey={await TokenHelper.GetToken("tokyochallenge")}&odpt:operator={OperatorInfo.GetCompanyByName(Key)}&odpt:fromStation={OperatorInfo.GetFormattedStationName(Key, Routes.First().Line.Name, Routes.First().From.Name)}&odpt:toStation={OperatorInfo.GetFormattedStationName(Key, Routes.Last().Line.Name, Routes.Last().To.Name)}";
+                url = $"{RequestHelper.ComposeURL("GetRailwayFare")}?acl:consumerKey={await TokenHelper.GetToken("tokyochallenge")}&odpt:operator={OperatorInfo.GetCompanyByName(Key)}&odpt:fromStation={OperatorInfo.GetFormattedStationName(Key, Routes.First().FromLine.Name, Routes.First().From.Name)}&odpt:toStation={OperatorInfo.GetFormattedStationName(Key, Routes.Last().ToLine.Name, Routes.Last().To.Name)}";
                 string response = await RequestHelper.GetJsonString(url);
                 if (!string.IsNullOrEmpty(response))
                 {

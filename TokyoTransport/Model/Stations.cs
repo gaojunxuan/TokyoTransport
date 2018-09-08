@@ -9,5 +9,7 @@ namespace TokyoTransport.Model
         public string name { get; set; }
         public string ja { get; set; }
         public string en { get; set; }
+        public string company { get; set; }
+        public string line { get; set; }
     }
 }

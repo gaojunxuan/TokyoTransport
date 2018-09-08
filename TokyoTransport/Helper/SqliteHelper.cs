@@ -16,9 +16,9 @@ namespace TokyoTransport.Helper
         static string currentPath = @"D:\home\site\wwwroot\data.sqlite";
 #endif
         static SQLiteConnection _conn = new SQLiteConnection(new SQLite.Net.Platform.Generic.SQLitePlatformGeneric(), currentPath);
-        public static Stations QueryStationWithJpName(string jaName)
+        public static Stations QueryStationWithJpName(string jaName,string company)
         {
-            return _conn.Query<Stations>("SELECT * FROM stations WHERE ja=?", jaName).FirstOrDefault();
+            return _conn.Query<Stations>("SELECT * FROM stations WHERE ja=? AND company=?", jaName, company).FirstOrDefault();
         }
         public static Lines QueryLineWithJpName(string jaName, string linecode="")
         {

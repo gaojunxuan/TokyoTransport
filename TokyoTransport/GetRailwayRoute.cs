@@ -44,9 +44,9 @@ namespace TokyoTransport
                     {
                         string lineName = j["line"]["line_name"].ToString();
                         string linecode = j["line"]["line_prefix"].ToString();
-                        var f = SqliteHelper.QueryStationWithJpName(j["src_station"]["station_name"].ToString());
-                        var t = SqliteHelper.QueryStationWithJpName(j["dst_station"]["station_name"].ToString());
                         var line = SqliteHelper.QueryLineWithJpName(lineName, linecode);
+                        var f = SqliteHelper.QueryStationWithJpName(j["src_station"]["station_name"].ToString(),line.company);
+                        var t = SqliteHelper.QueryStationWithJpName(j["dst_station"]["station_name"].ToString(),line.company);
                         result.Add(new RailwayRoute()
                         {
 
@@ -69,6 +69,14 @@ namespace TokyoTransport
                                 TradCnName = j["dst_station"]["station_name_zh_TW"].ToString(),
                                 EnName = t.en,
                                 StationNumber = j["dst_station"]["station_number"].ToString(),
+                            },
+                            FromLine = new RailwayLine()
+                            {
+                                Name = f.line,
+                            },
+                            ToLine = new RailwayLine()
+                            {
+                                Name = t.line,
                             },
                             Line = new RailwayLine()
                             {
