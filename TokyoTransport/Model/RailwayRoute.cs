@@ -10,7 +10,7 @@ namespace TokyoTransport.Model
         public RailwayStation To { get; set; }
         public int Time { get; set; }
         public RailwayLine Line { get; set; }
-        public RailwayFare Fare { get; set; }
+        public string Company { get; set; }
         public int StationCount { get; set; }
     }
 }

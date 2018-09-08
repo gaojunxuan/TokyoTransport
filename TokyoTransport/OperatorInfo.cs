@@ -7,21 +7,6 @@ namespace TokyoTransport
 {
     public class OperatorInfo
     {
-        private static readonly Dictionary<string, string> _companies = new Dictionary<string, string>()
-        {
-            { "JR", "JR-East" },
-            { "Keikyu", "Keikyu" },
-            { "Keio", "Keio" },
-            { "Keisei", "Keisei" },
-            { "Odakyu", "Odakyu" },
-            { "Seibu", "Seibu" },
-            { "Tobu", "Tobu" },
-            { "Toei", "Toei" },
-            { "TokyoMetro", "TokyoMetro" },
-            { "Tokyu", "Tokyu" },
-            { "TWR", "TWR" },
-            { "Yurikamome", "Yurikamome" },
-        };
         private static readonly Dictionary<string, string> _companiesJapanese = new Dictionary<string, string>()
         {
             { "JR", "JR東日本" },
@@ -60,7 +45,7 @@ namespace TokyoTransport
         };
         public static string GetCompanyByName(string name)
         {
-            return string.Format("odpt.Operator:{0}",_companies[name]);
+            return string.Format("odpt.Operator:{0}",name);
         }
         public static string GetJapaneseCompanyName(string name)
         {
@@ -68,11 +53,11 @@ namespace TokyoTransport
         }
         public static string GetFormattedLineName(string company, string lineName)
         {
-            return string.Format("odpt.Railway:{0}.{1}", _companies[company], lineName);
+            return string.Format("odpt.Railway:{0}.{1}", company, lineName);
         }
         public static string GetFormattedStationName(string company,string lineName,string staName)
         {
-            return string.Format("odpt.Station:{0}.{1}.{2}", _companies[company], lineName, staName);
+            return string.Format("odpt.Station:{0}.{1}.{2}", company, lineName, staName);
         }
         public static string GetAirportCode(string name)
         {

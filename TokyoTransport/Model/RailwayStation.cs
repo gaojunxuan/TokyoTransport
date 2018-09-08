@@ -6,6 +6,7 @@ namespace TokyoTransport.Model
 {
     public class RailwayStation
     {
+        public string Name { get; set; }
         public string JpName { get; set; }
         public string HiraganaName { get; set; }
         public string SimpCnName { get; set; }
