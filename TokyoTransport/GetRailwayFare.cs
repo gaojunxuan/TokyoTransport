@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using TokyoTransport.Model;
+using System.Linq;
 
 namespace TokyoTransport
 {
@@ -37,6 +38,23 @@ namespace TokyoTransport
             toLine = toLine ?? data?.toLine;
             company = company ?? data?.company;
 
+            if (company == "JR" & fromStation != null & toStation != null)
+            {
+                url = $"https://tokyofare.azurewebsites.net/jr?from={fromStation}&to={toStation}";
+                string response = await RequestHelper.GetJsonString(url);
+                JToken jsonObj = JObject.Parse(response);
+                List<dynamic> result = new List<dynamic>();
+                int a = (int)jsonObj["icCardFare"];
+                result.Add(new RailwayFare()
+                {
+                    IcCardFare = (int)jsonObj["icCardFare"],
+                    TicketFare = (int)jsonObj["ticketFare"],
+                    ChildIcCardFare = (int)jsonObj["childIcCardFare"],
+                    ChildTicketFare = (int)jsonObj["childTicketFare"]
+                });
+                return new OkObjectResult(result.First());
+            }
+
             if (fromStation != null & toStation != null & fromLine != null & toStation != null & company != null)
             {
                 url = $"{url}?acl:consumerKey={await TokenHelper.GetToken("tokyochallenge")}&odpt:operator={OperatorInfo.GetCompanyByName(company)}&odpt:fromStation={OperatorInfo.GetFormattedStationName(company, fromLine, fromStation)}&odpt:toStation={OperatorInfo.GetFormattedStationName(company, toLine, toStation)}";
@@ -53,7 +71,7 @@ namespace TokyoTransport
                         ChildTicketFare = (int)i["odpt:childTicketFare"]
                     });
                 }
-                return new OkObjectResult(result);
+                return new OkObjectResult(result.First());
             }
 
             return new BadRequestObjectResult("Please pass the required parameters on the query string or in the request body");
