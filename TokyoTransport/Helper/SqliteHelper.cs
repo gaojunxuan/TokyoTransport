@@ -8,9 +8,14 @@ using TokyoTransport.Model;
 
 namespace TokyoTransport.Helper
 {
-    public static class SqliteHelper
+    public class SqliteHelper
     {
-        static SQLiteConnection _conn = new SQLiteConnection(new SQLite.Net.Platform.Generic.SQLitePlatformGeneric(),"data.sqlite");
+#if DEBUG
+        static string currentPath = "data.sqlite";
+#else
+        static string currentPath = @"D:\home\site\wwwroot\data.sqlite";
+#endif
+        static SQLiteConnection _conn = new SQLiteConnection(new SQLite.Net.Platform.Generic.SQLitePlatformGeneric(), currentPath);
         public static Stations QueryStationWithJpName(string jaName)
         {
             return _conn.Query<Stations>("SELECT * FROM stations WHERE ja=?", jaName).FirstOrDefault();
